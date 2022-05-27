@@ -16,20 +16,20 @@ Note: For 4 or more names, the number in "and 2 others" simply increases.
 */
 
 function likes(names) {
-    let foreTxt = names.at(0) || "no one"
+    let foreTxt = names[0] || "no one"
     let midTxt = ""
     let endTxt = " likes this"
 
     if(names.length >= 2) {
-        midTxt = " and " + names.at(1)
+        midTxt = " and " + names[1]
         endTxt = " like this"
     }
     if(names.length >= 3) {
         foreTxt = names.slice(0, 2).join(', ')
-        midTxt = " and " + names.at(2)
+        midTxt = " and " + names[2]
     }
     if(names.length >= 4) {
-        midTxt = ` and ${names.length} others`
+        midTxt = ` and ${names.slice(2).length} others`
     }
 
     return foreTxt + midTxt + endTxt
