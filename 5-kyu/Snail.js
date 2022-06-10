@@ -23,17 +23,17 @@ function snail(arr) {
     var col = 0
     var row = 0
 
-    for (var i = 0; i < cols*rows - 1; i++) {
+    for (var i = 0; i < cols*rows; i++) {
         sorted.push(arr[row][col])
-        if (col < maxRight && row == maxTop) {
+        if (col < maxRight && row === maxTop) {
             col++
             if (col === maxRight) {
                 maxTop++
             }
-        } else if (col == maxRight && row < maxBottom) {
+        } else if (col === maxRight && row < maxBottom) {
             row++
             if (row === maxBottom) {
-                maxRight++
+                maxRight--
             }
         } else if (col > maxLeft && row === maxBottom) {
             col--
@@ -51,9 +51,19 @@ function snail(arr) {
     return sorted
 }
 
-array = [[1, 2, 3, 4],
-         [5, 6, 7, 8],
-         [9, 10, 11, 12],
+array = [[1,  2,  3,  4],
+         [5,  6,  7,  8],
+         [9,  10, 11, 12],
          [13, 14, 15, 16]]
+
+array = [[1,  2,  3,  4,  5],
+         [6,  7,  8,  9,  10],
+         [11, 12, 13, 14, 15],
+         [16, 17, 18, 19, 20],
+         [21, 22, 23, 24, 25]]
+
+array = [[1, 2, 3],
+         [4, 5, 6],
+         [7, 8, 9]]
 
 console.log(snail(array))
