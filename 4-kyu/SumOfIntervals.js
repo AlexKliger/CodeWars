@@ -1,32 +1,39 @@
-function sumIntervals(overlappingIntervals) {
-    return overlappingIntervals.reduce((sum, interval) => {
-        let diff = interval[1] - interval[0]
-        for (var i = 0; i < overlappingIntervals.indexOf(interval); i++) {
-            let prevInterval = overlappingIntervals[i],
-                prevLower = prevInterval[0],
-                prevUpper = prevInterval[1],
-                currLower = interval[0],
-                currUpper = interval[1]
-            console.log(`interval: ${interval}`)
-            // If the current interval's upper bound is above the previous interval's
-            if (prevLower <= currLower && currLower <= prevUpper && currUpper >= prevUpper) {
-                console.log(`current interval upper bound above previous interval ${prevInterval}`)
-                diff = interval[1] - prevInterval[1] <= diff ? interval[1] - prevInterval[1] : diff
-            // If the current interval's lower bound is below the previous interval's
-            } else if (prevLower <= currUpper && currUpper <= prevUpper && currLower <= prevLower) {
-                console.log(`current interval lower bound below previous intervals ${prevInterval}`)
-                diff = interval[1] - prevInterval[1] <= diff ? interval[1] - prevInterval[1] : diff
-            // If the current interval's lower & upper bounds are inside the previous interval
-            } else if (prevLower <= currLower && prevLower <= currUpper && prevUpper >= currLower && prevUpper >= currUpper)  {
-                console.log(`current interval between previous interval ${prevInterval}`)
-                diff = 0
+function sumIntervals(intervals) {
+    let prevInterval,
+        currInterval,
+        prevLower,
+        prevUpper,
+        currLower,
+        currUpper
+    const nonoverlapping = []
+    while (intervals.length) {
+        prevInterval = intervals.shift()
+        for (var i = 0; i < intervals.length; i++) {
+            currInterval = intervals[i]
+            prevLower = prevInterval[0]
+            prevUpper = prevInterval[1]
+            currLower = currInterval[0]
+            currUpper = currInterval[1]
+            if (currLower >= prevLower && currLower <= prevUpper && currUpper >= prevUpper) {
+                prevInterval[1] = currUpper
+                intervals.splice(i, 1)
+                i = -1
+            } else if (currUpper >= prevLower && currUpper <= prevUpper && currLower <= prevLower) {
+                prevInterval[0] = currLower
+                intervals.splice(i, 1)
+                i = -1
+            } else if (currLower >= prevLower && currLower <= prevUpper && currUpper >= prevLower && currUpper <= prevUpper) {
+                intervals.splice(i, 1)
+                i--
             }
         }
-
+        nonoverlapping.push(prevInterval)
+    }
+    return nonoverlapping.reduce((sum, interval) => {
+        diff = interval[1] - interval[0]
         sum += diff
-        console.log(`sum: ${sum}`)
         return sum
     }, 0)
 }
 
-console.log(sumIntervals([[ 1, 5 ], [ 10, 20 ], [ 1, 6 ], [ 16, 19 ], [ 5, 11 ]]))
+console.log(sumIntervals([[3, 5], [6, 9], [5, 7], [1, 4], [3, 4], [11, 15]]))
