@@ -35,5 +35,3 @@ function sumIntervals(intervals) {
         return sum
     }, 0)
 }
-
-console.log(sumIntervals([[3, 5], [6, 9], [5, 7], [1, 4], [3, 4], [11, 15]]))
