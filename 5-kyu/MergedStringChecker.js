@@ -13,21 +13,26 @@ function isOrdered(arr) {
 }
 
 function getMatchingIndexes(str, part) {
-    // returns a list of indexes of chars in str that appear in part
-    let p, start = 0, matchingIndexes = []
+    // returns a list of indexes of the chars in str that appear in part
+    let p, index, start = 0, matchingIndexes = []
     // loop through chars of p1
     for (let i = 0; i < part.length; i++) {
         p = part.charAt(i)
-        // if str contains p, cache the index
-        for (let j = start; j < str.length; j++) {
-            s = str.charAt(j)
-            if (p === s) {
-                matchingIndexes.push(j)
-                start = j
-                break
-            }
+        index = str.lastIndexOf(p)
+        if (index >= 0) {
+            matchingIndexes.push(index)
         }
+        // // if str contains p, cache the index
+        // for (let j = start; j < str.length; j++) {
+        //     s = str.charAt(j)
+        //     if (p === s) {
+        //         matchingIndexes.push(j)
+        //         start = j
+        //         break
+        //     }
+        // }
     }
+    console.log('getMatchingIndexes( str:', str, ', part:', part, ') -> matchingIndexes:', matchingIndexes)
     return matchingIndexes
 }
 
@@ -56,6 +61,6 @@ function isMerge(str, p1, p2) {
     return true
 }
 
-// console.log(isMerge('xcyc', 'xc', 'yc')) // true
+console.log(isMerge('xcyc', 'xc', 'yc')) // true
 // console.log(isMerge('xcyc', 'yc', 'xc')) // true
-console.log(isMerge('xcyc', 'xc', 'cy')) // true
+// console.log(isMerge('xcyc', 'xc', 'cy')) // true
