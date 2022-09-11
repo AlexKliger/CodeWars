@@ -35,11 +35,14 @@ function pickPeaksNaive(arr) {
             console.log('plateauStart:', i)
             plateauStart = i
         // If a plateau ends
-        } else if (plateauStart && arr[plateauStart] !== arr[i]) {
-            if (arr[plateauStart] > arr[i+1] && arr[plateauStart] > arr[plateauStart-1])
+        } else if (plateauStart && arr[i] !== arr[i+1]) {
             console.log('plateauEnd:', i)
-            output.pos.push(plateauStart)
-            output.peaks.push(arr[plateauStart])
+            // If the plateau is a peak
+            if (arr[plateauStart] > arr[i+1] && arr[plateauStart] > arr[plateauStart-1]) {
+                console.log('   plateau is a peak')
+                output.pos.push(plateauStart)
+                output.peaks.push(arr[plateauStart])
+            }
             plateauStart = null
         }
     }
@@ -63,4 +66,4 @@ function pickPeaksBinarySearch(arr) {
 // console.log(pickPeaksBinarySearch([1, 2, 3, 2, 1]))
 // console.log(pickPeaksBinarySearch([1, 2, 2, 6, 3, 1, 6, 3, 2, 1]))
 
-console.log(pickPeaksNaive([1,2,5,4,3,2,3,6,4,1,2,3,3,4,5,3,2,1,2,3,5,5,4,3]))
+console.log(pickPeaksNaive([3,2,3,6,4,1,2,3,2,1,2,2,2,1]))
