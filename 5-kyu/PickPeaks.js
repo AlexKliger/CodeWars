@@ -14,22 +14,53 @@ The first and last elements of the array will not be considered as peaks (in the
 Also, beware of plateaus !!! [1, 2, 2, 2, 1] has a peak while [1, 2, 2, 2, 3] and [1, 2, 2, 2, 2] do not. In case of a plateau-peak, please only return the position and value of the beginning of the plateau. For example: pickPeaks([1, 2, 2, 2, 1]) returns {pos: [1], peaks: [2]} (or equivalent in other languages)
 */
 
-const { exportAllDeclaration } = require("@babel/types")
-
 // P: array of integers, plateus are possible
-// E: object containing a list of index position and a list of peaks corresponding to elements of index array.
+// E: object containing a list of index position and a list of peaks corresponding to elements of index array. Boundary elements are not included.
 
 // Naive implementation
 function pickPeaksNaive(arr) {
     // Set up empty object
     const output = {pos: [], peaks: []}
-    let localPeak = null
+    let plateauStart = null
     // Iterate through elements 1 to n - 1, where n is the length of the array.
     for (let i = 1; i < arr.length; i++) {
+        // If the element is greater than both of its neighbors.
         if (arr[i] > arr[i-1] && arr[i] > arr[i+1]) {
+            console.log('peak at index:', i)
             output.pos.push(i)
             output.peaks.push(arr[i])
+            i++
+        // If the start of a plateau occurs, cache the starting index.
+        } else if (arr[i] === arr[i+1] && arr[i] !== arr[i-1]) {
+            console.log('plateauStart:', i)
+            plateauStart = i
+        // If a plateau ends
+        } else if (plateauStart && arr[plateauStart] !== arr[i]) {
+            if (arr[plateauStart] > arr[i+1] && arr[plateauStart] > arr[plateauStart-1])
+            console.log('plateauEnd:', i)
+            output.pos.push(plateauStart)
+            output.peaks.push(arr[plateauStart])
+            plateauStart = null
         }
     }
-    return output  
+    return output
 }
+
+// Binary search to find peak. Does not work with plateaus or multiple peaks. Includes boundary elements.
+function pickPeaksBinarySearch(arr) {
+    const mid = Math.floor(arr.length/2)
+    if (arr.length === 1) {
+        return arr[0]
+    // if element to the left of arr[n/2] is larger than arr[n/2], look to left half
+    } else if (arr[mid] <= arr[mid-1]) {
+        return pickPeaksBinarySearch(arr.slice(0, mid))
+    // else if element to the right of arr[n/2] is larger than arr[n/2], look to right half
+    } else if (arr[mid]) {
+        return pickPeaksBinarySearch(arr.slice(mid))
+    }
+}
+
+// console.log(pickPeaksBinarySearch([1, 2, 3, 2, 1]))
+// console.log(pickPeaksBinarySearch([1, 2, 2, 6, 3, 1, 6, 3, 2, 1]))
+
+console.log(pickPeaksNaive([1,2,5,4,3,2,3,6,4,1,2,3,3,4,5,3,2,1,2,3,5,5,4,3]))
