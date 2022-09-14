@@ -23,14 +23,13 @@ function josephusSurvivor(n, k) {
     let i = (k - 1) % n.length
     // iterate through loop while the length of the array is greater than 1
     while (n.length > 1) {
-        console.log(n)
         // remove the kth element from the array
         n.splice(i, 1)
         // compute a new value for k to be used in the next iteration for the loop
         i = i + k - 1
-        i = i > n.length ? i % n.length : i
+        i = i >= n.length ? i % n.length : i
     }
     return n[0]
 }
 
-console.log(josephusSurvivor(4, 2))
+console.log(josephusSurvivor(7, 3))
